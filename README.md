@@ -28,7 +28,7 @@ The game will automatically detect a win or a tie and reset the board for a new 
 
 
 Clone the repository to your local machine:
-git clone https://github.com/your-username/tic-tac-toe.git
+git clone https://github.com/aawhan0/tic-tac-toe-game.git
 
 Navigate to the project directory and install dependencies:
 cd tic-tac-toe
