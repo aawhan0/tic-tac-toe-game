@@ -1,0 +1,52 @@
+.container{
+    text-align: center;
+}
+
+.title{
+    margin-top: 50px;
+    color: wheat;
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title span{
+    color: aqua;
+    padding-left: 15px;
+}
+.reset{
+    width: 180px;
+    height: 55px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 50px;
+    background-color: grey;
+    font-size: 25px;
+    color: aqua;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.boxes{
+    display: flex;
+    height: 150px;
+    width: 150px;
+    background-color: #1f3540;
+    border: 4px soil #0f1b21;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: 10px;
+    justify-content: center;
+}
+.board{
+    height: 500px;
+    width: 524px;
+    display: flex;
+    margin: auto;
+}
+
+.boxes img{
+    margin: 50px 50px;
+}
