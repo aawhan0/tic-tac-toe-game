@@ -77,6 +77,13 @@ body {
     animation-name: fadeInScale;
     animation-timing-function: ease;
 }
+
+/* Add this CSS rule to style the winning boxes */
+.winning-box {
+    background-color: #ffcc00; /* Yellow color for the winning boxes */
+    border: 2px solid #333; /* Optional: Border to highlight the winning boxes */
+  }
+  
 .board{
     height: 500px;
     width: 524px;

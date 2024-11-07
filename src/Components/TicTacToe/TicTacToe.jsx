@@ -9,6 +9,7 @@ const TicTacToe = () => {
     const [data, setData] = useState(Array(9).fill("")); // Initialize the grid data with empty strings
     const [isDarkMode, setIsDarkMode] = useState(true); // State for dark mode
     const [isGameOver, setIsGameOver] = useState(false); // State to check if the game is over (to trigger reset)
+    const [winningCombination, setWinningCombination] = useState([]); // Track the winning boxes
     const titleRef = useRef(null); // Reference to the title for displaying winner
     const boxRefs = useRef(Array(9).fill(null)); // Array of refs for each box
     const timeoutRef = useRef(null); // Reference to store timeout ID to clear it later if needed
@@ -20,6 +21,11 @@ const TicTacToe = () => {
             if (box) {
                 box.innerHTML = data[index] === "x" ? `<img src='${TTTcross}'>` : data[index] === "o" ? `<img src='${TTTcircle}'>` : '';
                 box.classList.add("imagey");
+                if (winningCombination.includes(index)) {
+                    box.classList.add("winning-box");
+                } else {
+                    box.classList.remove("winning-box");
+                }
             }
         });
 
