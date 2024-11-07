@@ -9,6 +9,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    animation-duration: 2.25s;
+    animation-name: fadeInTitle;
+    animation-timing-function: ease;
 }
 
 .title span{
@@ -27,6 +31,9 @@
     color: aqua;
     margin-top: 50px;
     margin-bottom: 50px;
+
+    animation-name:fadeInResetButton ;
+    animation-duration: 2.25s;
 }
 .boxes{
     display: flex;
@@ -39,6 +46,10 @@
     margin-top: 10px;
     margin-left: 10px;
     justify-content: center;
+
+    animation-duration: 2s;
+    animation-name: spinboxes;
+    animation-timing-function: ease;
 }
 .board{
     height: 500px;
@@ -55,3 +66,57 @@
     padding: 20px 20px;
     height: 50px;
 }
+
+@keyframes spintitle{
+    0%{
+
+    }
+    100%{
+        transform: rotate(360deg);
+     }   
+}
+
+@keyframes spinboxes{
+    0%{
+        border-radius: 50px;
+        scale: 0.5;
+    }
+
+    50%{
+        scale: 0.75;
+        border-radius: 30px;
+     }  
+
+     75%{
+        border-radius: 5px;
+     }  
+
+    100%{
+        transform: rotate(360deg);
+        border-radius: 10px;
+        scale: 1;
+     }   
+}
+
+
+@keyframes fadeInTitle {
+    0% {
+      opacity: 0;
+      scale: 3;
+    }
+    100% {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  @keyframes fadeInResetButton {
+    0% {
+      opacity: 0;
+      scale: 1.5;
+    }
+    100% {
+      opacity: 1;
+      scale: 1;
+    }
+  }
