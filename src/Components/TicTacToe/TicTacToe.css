@@ -1,10 +1,35 @@
-.container{
-    text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@300..700&display=swap');
+
+
+
+body {
+    font-family: "Teko", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    margin: 0; /* Reset margin */
+    padding: 0; /* Reset padding */
 }
 
+/* Ensure all text inside .container uses the font */
+.container {
+  font-family: "Teko", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+/* Override font for specific elements if needed */
+.title, .reset, .boxes, button {
+    font-family: "Teko", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+.container {
+    text-align: center;
+    font-family: 'Open Sans', 'Poppins', 'Teko', sans-serif;
+}
 .title{
     margin-top: 50px;
-    color: wheat;
+    color: whitesmoke;
     font-size: 50px;
     display: flex;
     justify-content: center;
@@ -16,7 +41,7 @@
 }
 
 .title span{
-    color: aqua;
+    color: yellow;
     padding-left: 5px;
     padding-right: 5px;
 }
@@ -28,8 +53,8 @@
     cursor: pointer;
     border-radius: 50px;
     background-color: grey;
-    font-size: 25px;
-    color: aqua;
+    font-size: 40px;
+    color: #0f1b21;
     margin-top: 50px;
     margin-bottom: 50px;
 
@@ -68,6 +93,42 @@
     height: 45px;
 }
 
+.container.dark-mode {
+    background-color: #0f1b21;
+    color: whitesmoke;
+}
+
+.container.light-mode {
+    background-color: whitesmoke;
+    color: #0f1b21;
+}
+
+
+.container.dark-mode .boxes {
+    border-color: #444;
+}
+
+.container.dark-mode .boxes:hover {
+    background-color: rgba(245, 222, 179, 0.102);
+}
+
+button {
+    width: 180px;
+    height: 55px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 50px;
+    background-color: grey;
+    font-size: 40px;
+    color: white;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: 10px;
+
+    animation-name:fadeInResetButton ;
+    animation-duration: 2.25s;
+}
 @keyframes spintitle{
     0%{
 
@@ -150,15 +211,15 @@
 
 .tie-message {
     animation: fadeInScale 1s ease-in-out; /* Apply the fade-in and scale animation */
-    color: aqua; /* Red color for the tie */
-    font-size: 45px; /* Font size */
+    color: red; /* Red color for the tie */
+    font: size 45px; /* Font size */
     text-align: center;
     font-weight: bold;
 }
 
 .congratulations-message{
     animation: fadeInScale 1s ease-in-out; /* Apply the fade-in and scale animation */
-    color: yellow; /* Red color for the tie */
+    color: green; /* Red color for the tie */
     font-size: 45px; /* Font size */
     text-align: center;
     font-weight: bold;

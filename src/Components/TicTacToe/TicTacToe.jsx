@@ -7,6 +7,7 @@ const TicTacToe = () => {
     const [count, setCount] = useState(0); // Game turn count
     const [lock, setLock] = useState(false); // Lock to prevent further moves after a winner
     const [data, setData] = useState(Array(9).fill("")); // Initialize the grid data with empty strings
+    const [isDarkMode, setIsDarkMode] = useState(false); // State for dark mode
     const titleRef = useRef(null); // Reference to the title for displaying winner
     const boxRefs = useRef(Array(9).fill(null)); // Array of refs for each box
 
@@ -74,11 +75,15 @@ const TicTacToe = () => {
         setLock(false); // Unlock the game
         setData(Array(9).fill("")); // Reset the grid data to empty strings
         titleRef.current.innerHTML = "Tic-<span>Tac</span> -Toe"; // Reset the title
+        
         setCount(0); // Reset the count to 0
+    };
+    const toggleDarkMode = () => {
+        setIsDarkMode((prevMode) => !prevMode);
     };
 
     return (
-        <div className="container">
+        <div className={`container ${isDarkMode ? "dark-mode" : "light-mode"}`}>
             <h1 className="title" ref={titleRef}>Tic-<span>Tac</span>-Toe</h1>
 
             <div className="board">
@@ -98,8 +103,14 @@ const TicTacToe = () => {
                     <div className="boxes" ref={(el) => (boxRefs.current[8] = el)} onClick={(e) => toggle(e, 8)}></div>
                 </div>
             </div>
-
+            <div className="button-container">
             <button className="reset" onClick={resetGame}>Reset</button>
+            <button className="dark-mode-toggle" onClick={toggleDarkMode}>
+                {isDarkMode ? "Light Mode" : "Dark Mode"}
+            </button>
+
+            </div>
+            
         </div>
     );
 };
