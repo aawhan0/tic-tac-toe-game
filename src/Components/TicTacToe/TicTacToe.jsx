@@ -9,6 +9,15 @@ const TicTacToe = () => {
     let [count, setCount] = useState(0); // Use proper naming convention
     let [lock, setLock] = useState(false);
     let titleRef = useRef(null);
+    let box1 = useRef(null);
+    let box2 = useRef(null);
+    let box3 = useRef(null);
+    let box4 = useRef(null);
+    let box5 = useRef(null);
+    let box6 = useRef(null);
+    let box7 = useRef(null);
+    let box8 = useRef(null);
+    let box9 = useRef(null);
     const [data, setData] = useState(Array(9).fill("")); // Initialize the grid data
 
     const toggle = (e, num) => {
@@ -61,6 +70,7 @@ const TicTacToe = () => {
 
     const resetGame = () => {
         setData(Array(9).fill("")); // Reset the game grid
+        titleRef.current.innerHTML = "Tic Tac Toe using <span>React</span>"
         setLock(false); // Unlock the game
         setCount(0); // Reset the count
     };
