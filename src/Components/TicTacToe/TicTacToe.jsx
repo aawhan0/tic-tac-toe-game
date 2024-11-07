@@ -82,7 +82,7 @@ const TicTacToe = () => {
 
     const won = (winner) => {
         setLock(true); // Lock the game when someone wins
-        alert(`${winner} wins!`); // Display the winner message
+        // alert(`${winner} wins!`); // Display the winner message
         titleRef.current.innerHTML = `Congratulations: <img src='${winner === "x" ? TTTcross : TTTcircle}'> wins`;
         titleRef.current.classList.add("congratulations-message");
         setIsGameOver(true); // Mark the game as over (win condition)
