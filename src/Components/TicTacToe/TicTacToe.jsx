@@ -1,45 +1,45 @@
-import React, { useState, useRef } from 'react' 
-import './TicTacToe.css'
-import TTTcircle from "../Assets/TTTcircle.png"
-import TTTcross from "../Assets/TTTcross.png"
-
-let data = ["","","","","","","","",""];
+import React, { useState, useRef, useEffect } from 'react'; 
+import './TicTacToe.css';
+import TTTcircle from "../Assets/TTTcircle.png";
+import TTTcross from "../Assets/TTTcross.png";
 
 const TicTacToe = () => {
-    let [count, setCount] = useState(0); // Use proper naming convention
-    let [lock, setLock] = useState(false);
-    let titleRef = useRef(null);
-    let box1 = useRef(null);
-    let box2 = useRef(null);
-    let box3 = useRef(null);
-    let box4 = useRef(null);
-    let box5 = useRef(null);
-    let box6 = useRef(null);
-    let box7 = useRef(null);
-    let box8 = useRef(null);
-    let box9 = useRef(null);
-    const [data, setData] = useState(Array(9).fill("")); // Initialize the grid data
+    const [count, setCount] = useState(0); // Game turn count
+    const [lock, setLock] = useState(false); // Lock to prevent further moves after a winner
+    const [data, setData] = useState(Array(9).fill("")); // Initialize the grid data with empty strings
+    const titleRef = useRef(null); // Reference to the title for displaying winner
+    const boxRefs = useRef(Array(9).fill(null)); // Array of refs for each box
+
+    // Update boxes based on the `data` state
+    useEffect(() => {
+        // Clear the HTML of each box whenever the data changes
+        boxRefs.current.forEach((box, index) => {
+            if (box) {
+                box.innerHTML = data[index] === "x" ? `<img src='${TTTcross}'>` : data[index] === "o" ? `<img src='${TTTcircle}'>` : '';
+            }
+        });
+    }, [data]); // Run whenever `data` state changes
 
     const toggle = (e, num) => {
         if (lock || data[num] !== "") {
             return; // Prevent toggling if already filled or if locked
         }
-        
-        if (count % 2 === 0) {
-            e.target.innerHTML = `<img src='${TTTcross}'>`;
-            data[num] = "x";
-        } else {
-            e.target.innerHTML = `<img src='${TTTcircle}'>`;
-            data[num] = "o";
-        }
-        
-        setData([...data]); // Update the data state
-        setCount(count + 1);  // Update the count (use functional update)
 
-        checkWinner();
+        const updatedData = [...data]; // Copy the current data array
+
+        if (count % 2 === 0) {
+            updatedData[num] = "x"; // Set the clicked position to "x"
+        } else {
+            updatedData[num] = "o"; // Set the clicked position to "o"
+        }
+
+        setData(updatedData); // Update the state with the new data array
+        setCount(count + 1); // Increment the turn count
+
+        checkWinner(updatedData); // Check for a winner with the updated data
     };
 
-    const checkWinner = () => {
+    const checkWinner = (currentData) => {
         // Check all winning conditions
         const winningCombinations = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
@@ -49,30 +49,27 @@ const TicTacToe = () => {
 
         for (let combo of winningCombinations) {
             const [a, b, c] = combo;
-            if (data[a] !== "" && data[a] === data[b] && data[b] === data[c]) {
-                won(data[c]); // `won` function now takes the winner ("x" or "o")
+            if (currentData[a] !== "" && currentData[a] === currentData[b] && currentData[b] === currentData[c]) {
+                won(currentData[c]); // Pass the winner ("x" or "o")
                 return;
             }
+        }
+        if (!currentData.includes("") && !lock) { // No empty spaces and no winner
+            titleRef.current.innerHTML = "Tie"; // Set the title to "Tie"
         }
     };
 
     const won = (winner) => {
         setLock(true); // Lock the game when someone wins
-        alert(`${winner} wins!`); // Display a winner message
-        if(winner==="x"){
-            titleRef.current.innerHTML = `Congratulations: <img src = ${TTTcross}> wins`
-        }
-        else{
-            titleRef.current.innerHTML = `Congratulations: <img src = ${TTTcircle}> wins`
-
-        }
+        alert(`${winner} wins!`); // Display the winner message
+        titleRef.current.innerHTML = `Congratulations: <img src='${winner === "x" ? TTTcross : TTTcircle}'> wins`;
     };
 
     const resetGame = () => {
-        setData(Array(9).fill("")); // Reset the game grid
-        titleRef.current.innerHTML = "Tic Tac Toe using <span>React</span>"
         setLock(false); // Unlock the game
-        setCount(0); // Reset the count
+        setData(Array(9).fill("")); // Reset the grid data to empty strings
+        titleRef.current.innerHTML = "Tic Tac Toe using React"; // Reset the title
+        setCount(0); // Reset the count to 0
     };
 
     return (
@@ -81,19 +78,19 @@ const TicTacToe = () => {
 
             <div className="board">
                 <div className="row1">
-                    <div className="boxes" onClick={(e) => toggle(e, 0)}></div>
-                    <div className="boxes" onClick={(e) => toggle(e, 1)}></div>
-                    <div className="boxes" onClick={(e) => toggle(e, 2)}></div>
+                    <div className="boxes" ref={(el) => (boxRefs.current[0] = el)} onClick={(e) => toggle(e, 0)}></div>
+                    <div className="boxes" ref={(el) => (boxRefs.current[1] = el)} onClick={(e) => toggle(e, 1)}></div>
+                    <div className="boxes" ref={(el) => (boxRefs.current[2] = el)} onClick={(e) => toggle(e, 2)}></div>
                 </div>
                 <div className="row2">
-                    <div className="boxes" onClick={(e) => toggle(e, 3)}></div>
-                    <div className="boxes" onClick={(e) => toggle(e, 4)}></div>
-                    <div className="boxes" onClick={(e) => toggle(e, 5)}></div>
+                    <div className="boxes" ref={(el) => (boxRefs.current[3] = el)} onClick={(e) => toggle(e, 3)}></div>
+                    <div className="boxes" ref={(el) => (boxRefs.current[4] = el)} onClick={(e) => toggle(e, 4)}></div>
+                    <div className="boxes" ref={(el) => (boxRefs.current[5] = el)} onClick={(e) => toggle(e, 5)}></div>
                 </div>
                 <div className="row3">
-                    <div className="boxes" onClick={(e) => toggle(e, 6)}></div>
-                    <div className="boxes" onClick={(e) => toggle(e, 7)}></div>
-                    <div className="boxes" onClick={(e) => toggle(e, 8)}></div>
+                    <div className="boxes" ref={(el) => (boxRefs.current[6] = el)} onClick={(e) => toggle(e, 6)}></div>
+                    <div className="boxes" ref={(el) => (boxRefs.current[7] = el)} onClick={(e) => toggle(e, 7)}></div>
+                    <div className="boxes" ref={(el) => (boxRefs.current[8] = el)} onClick={(e) => toggle(e, 8)}></div>
                 </div>
             </div>
 
