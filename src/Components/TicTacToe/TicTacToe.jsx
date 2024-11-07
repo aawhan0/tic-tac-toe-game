@@ -16,6 +16,7 @@ const TicTacToe = () => {
         boxRefs.current.forEach((box, index) => {
             if (box) {
                 box.innerHTML = data[index] === "x" ? `<img src='${TTTcross}'>` : data[index] === "o" ? `<img src='${TTTcircle}'>` : '';
+                box.classList.add("imagey");
             }
         });
     }, [data]); // Run whenever `data` state changes
@@ -37,6 +38,8 @@ const TicTacToe = () => {
         setCount(count + 1); // Increment the turn count
 
         checkWinner(updatedData); // Check for a winner with the updated data
+
+                    
     };
 
     const checkWinner = (currentData) => {
@@ -56,6 +59,7 @@ const TicTacToe = () => {
         }
         if (!currentData.includes("") && !lock) { // No empty spaces and no winner
             titleRef.current.innerHTML = "Tie"; // Set the title to "Tie"
+            titleRef.current.classList.add("tie-message");
         }
     };
 
@@ -63,18 +67,19 @@ const TicTacToe = () => {
         setLock(true); // Lock the game when someone wins
         alert(`${winner} wins!`); // Display the winner message
         titleRef.current.innerHTML = `Congratulations: <img src='${winner === "x" ? TTTcross : TTTcircle}'> wins`;
+        titleRef.current.classList.add("congratulations-message");
     };
 
     const resetGame = () => {
         setLock(false); // Unlock the game
         setData(Array(9).fill("")); // Reset the grid data to empty strings
-        titleRef.current.innerHTML = "Tic Tac Toe using React"; // Reset the title
+        titleRef.current.innerHTML = "Tic-<span>Tac</span> -Toe"; // Reset the title
         setCount(0); // Reset the count to 0
     };
 
     return (
         <div className="container">
-            <h1 className="title" ref={titleRef}>Tic Tac Toe using <span>React</span></h1>
+            <h1 className="title" ref={titleRef}>Tic-<span>Tac</span>-Toe</h1>
 
             <div className="board">
                 <div className="row1">

@@ -17,7 +17,8 @@
 
 .title span{
     color: aqua;
-    padding-left: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 .reset{
     width: 180px;
@@ -48,7 +49,7 @@
     justify-content: center;
 
     animation-duration: 2s;
-    animation-name: spinboxes;
+    animation-name: fadeInScale;
     animation-timing-function: ease;
 }
 .board{
@@ -64,7 +65,7 @@
 
 .title img{
     padding: 20px 20px;
-    height: 50px;
+    height: 45px;
 }
 
 @keyframes spintitle{
@@ -120,3 +121,46 @@
       scale: 1;
     }
   }
+
+  @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+#winner-message {
+    animation: fadeIn 1s; /* Apply fade-in animation */
+    opacity: 0; /* Initially hidden */
+
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.tie-message {
+    animation: fadeInScale 1s ease-in-out; /* Apply the fade-in and scale animation */
+    color: aqua; /* Red color for the tie */
+    font-size: 45px; /* Font size */
+    text-align: center;
+    font-weight: bold;
+}
+
+.congratulations-message{
+    animation: fadeInScale 1s ease-in-out; /* Apply the fade-in and scale animation */
+    color: yellow; /* Red color for the tie */
+    font-size: 45px; /* Font size */
+    text-align: center;
+    font-weight: bold;
+}
+
