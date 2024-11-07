@@ -28,9 +28,9 @@ body {
     font-family: 'Open Sans', 'Poppins', 'Teko', sans-serif;
 }
 .title{
-    margin-top: 50px;
+    margin-top: 30px;
     color: whitesmoke;
-    font-size: 50px;
+    font-size: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,7 +54,7 @@ body {
     border-radius: 50px;
     background-color: grey;
     font-size: 40px;
-    color: #0f1b21;
+    color: whitesmoke;
     margin-top: 50px;
     margin-bottom: 50px;
 
@@ -81,7 +81,9 @@ body {
     height: 500px;
     width: 524px;
     display: flex;
-    margin: auto;
+    margin: auto
+
+    
 }
 
 .boxes img{
@@ -99,7 +101,7 @@ body {
 }
 
 .container.light-mode {
-    background-color: whitesmoke;
+    background-color: rgba(245, 245, 245, 0.573);
     color: #0f1b21;
 }
 

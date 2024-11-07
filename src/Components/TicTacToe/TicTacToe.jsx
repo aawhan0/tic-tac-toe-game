@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'; 
+import React, { useState, useRef, useEffect } from 'react';
 import './TicTacToe.css';
 import TTTcircle from "../Assets/TTTcircle.png";
 import TTTcross from "../Assets/TTTcross.png";
@@ -7,9 +7,11 @@ const TicTacToe = () => {
     const [count, setCount] = useState(0); // Game turn count
     const [lock, setLock] = useState(false); // Lock to prevent further moves after a winner
     const [data, setData] = useState(Array(9).fill("")); // Initialize the grid data with empty strings
-    const [isDarkMode, setIsDarkMode] = useState(false); // State for dark mode
+    const [isDarkMode, setIsDarkMode] = useState(true); // State for dark mode
+    const [isGameOver, setIsGameOver] = useState(false); // State to check if the game is over (to trigger reset)
     const titleRef = useRef(null); // Reference to the title for displaying winner
     const boxRefs = useRef(Array(9).fill(null)); // Array of refs for each box
+    const timeoutRef = useRef(null); // Reference to store timeout ID to clear it later if needed
 
     // Update boxes based on the `data` state
     useEffect(() => {
@@ -20,7 +22,22 @@ const TicTacToe = () => {
                 box.classList.add("imagey");
             }
         });
-    }, [data]); // Run whenever `data` state changes
+
+        // Automatically reset the game if it's over
+        if (isGameOver) {
+            // Trigger the auto-reset with a delay of 5 seconds
+            timeoutRef.current = setTimeout(() => {
+                resetGame();
+            }, 5000); // Reset after 5 seconds
+        }
+
+        // Clean up the timeout when the component unmounts or game ends
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current); // Clear any existing timeouts
+            }
+        };
+    }, [data, isGameOver]); // Trigger when data or isGameOver changes
 
     const toggle = (e, num) => {
         if (lock || data[num] !== "") {
@@ -39,8 +56,6 @@ const TicTacToe = () => {
         setCount(count + 1); // Increment the turn count
 
         checkWinner(updatedData); // Check for a winner with the updated data
-
-                    
     };
 
     const checkWinner = (currentData) => {
@@ -61,6 +76,7 @@ const TicTacToe = () => {
         if (!currentData.includes("") && !lock) { // No empty spaces and no winner
             titleRef.current.innerHTML = "Tie"; // Set the title to "Tie"
             titleRef.current.classList.add("tie-message");
+            setIsGameOver(true); // Mark the game as over (tie condition)
         }
     };
 
@@ -69,15 +85,23 @@ const TicTacToe = () => {
         alert(`${winner} wins!`); // Display the winner message
         titleRef.current.innerHTML = `Congratulations: <img src='${winner === "x" ? TTTcross : TTTcircle}'> wins`;
         titleRef.current.classList.add("congratulations-message");
+        setIsGameOver(true); // Mark the game as over (win condition)
     };
 
     const resetGame = () => {
         setLock(false); // Unlock the game
         setData(Array(9).fill("")); // Reset the grid data to empty strings
         titleRef.current.innerHTML = "Tic-<span>Tac</span> -Toe"; // Reset the title
-        
+        titleRef.current.classList.remove("congratulations-message", "tie-message"); // Remove classes
+        titleRef.current.style.color = ""; // Reset the title color to default (use your original color if needed)       
         setCount(0); // Reset the count to 0
+        setIsGameOver(false); // Reset game over state
+        setTimeout(() => {
+            titleRef.current.classList.add("title-animation"); // Add animation class again
+        }, 50);
+                
     };
+
     const toggleDarkMode = () => {
         setIsDarkMode((prevMode) => !prevMode);
     };
@@ -103,14 +127,13 @@ const TicTacToe = () => {
                     <div className="boxes" ref={(el) => (boxRefs.current[8] = el)} onClick={(e) => toggle(e, 8)}></div>
                 </div>
             </div>
-            <div className="button-container">
-            <button className="reset" onClick={resetGame}>Reset</button>
-            <button className="dark-mode-toggle" onClick={toggleDarkMode}>
-                {isDarkMode ? "Light Mode" : "Dark Mode"}
-            </button>
 
+            <div className="button-container">
+                <button className="reset" onClick={resetGame}>Play Again</button>
+                <button className="dark-mode-toggle" onClick={toggleDarkMode}>
+                    {isDarkMode ? "Light Mode" : "Dark Mode"}
+                </button>
             </div>
-            
         </div>
     );
 };
