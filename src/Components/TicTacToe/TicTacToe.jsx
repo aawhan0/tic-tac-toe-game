@@ -14,13 +14,14 @@ const TicTacToe = () => {
     const boxRefs = useRef(Array(9).fill(null)); // Array of refs for each box
     const timeoutRef = useRef(null); // Reference to store timeout ID to clear it later if needed
 
-    // Update boxes based on the `data` state
     useEffect(() => {
-        // Clear the HTML of each box whenever the data changes
+        // Update boxes based on the `data` state
         boxRefs.current.forEach((box, index) => {
             if (box) {
                 box.innerHTML = data[index] === "x" ? `<img src='${TTTcross}'>` : data[index] === "o" ? `<img src='${TTTcircle}'>` : '';
                 box.classList.add("imagey");
+
+                // Apply the winning style if this box is part of the winning combination
                 if (winningCombination.includes(index)) {
                     box.classList.add("winning-box");
                 } else {
@@ -31,19 +32,17 @@ const TicTacToe = () => {
 
         // Automatically reset the game if it's over
         if (isGameOver) {
-            // Trigger the auto-reset with a delay of 5 seconds
             timeoutRef.current = setTimeout(() => {
                 resetGame();
             }, 5000); // Reset after 5 seconds
         }
 
-        // Clean up the timeout when the component unmounts or game ends
         return () => {
             if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current); // Clear any existing timeouts
             }
         };
-    }, [data, isGameOver]); // Trigger when data or isGameOver changes
+    }, [data, isGameOver, winningCombination]); // Include winningCombination as a dependency
 
     const toggle = (e, num) => {
         if (lock || data[num] !== "") {
@@ -52,11 +51,8 @@ const TicTacToe = () => {
 
         const updatedData = [...data]; // Copy the current data array
 
-        if (count % 2 === 0) {
-            updatedData[num] = "x"; // Set the clicked position to "x"
-        } else {
-            updatedData[num] = "o"; // Set the clicked position to "o"
-        }
+        // Set the clicked position to "x" or "o" based on the current turn
+        updatedData[num] = count % 2 === 0 ? "x" : "o";
 
         setData(updatedData); // Update the state with the new data array
         setCount(count + 1); // Increment the turn count
@@ -65,7 +61,6 @@ const TicTacToe = () => {
     };
 
     const checkWinner = (currentData) => {
-        // Check all winning conditions
         const winningCombinations = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
             [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
@@ -75,10 +70,11 @@ const TicTacToe = () => {
         for (let combo of winningCombinations) {
             const [a, b, c] = combo;
             if (currentData[a] !== "" && currentData[a] === currentData[b] && currentData[b] === currentData[c]) {
-                won(currentData[c]); // Pass the winner ("x" or "o")
+                won(currentData[c], combo); // Pass the winner ("x" or "o") and the winning combination
                 return;
             }
         }
+
         if (!currentData.includes("") && !lock) { // No empty spaces and no winner
             titleRef.current.innerHTML = "Tie"; // Set the title to "Tie"
             titleRef.current.classList.add("tie-message");
@@ -86,9 +82,9 @@ const TicTacToe = () => {
         }
     };
 
-    const won = (winner) => {
+    const won = (winner, combo) => {
         setLock(true); // Lock the game when someone wins
-        // alert(`${winner} wins!`); // Display the winner message
+        setWinningCombination(combo); // Store the winning combination
         titleRef.current.innerHTML = `Congratulations: <img src='${winner === "x" ? TTTcross : TTTcircle}'> wins`;
         titleRef.current.classList.add("congratulations-message");
         setIsGameOver(true); // Mark the game as over (win condition)
@@ -97,15 +93,15 @@ const TicTacToe = () => {
     const resetGame = () => {
         setLock(false); // Unlock the game
         setData(Array(9).fill("")); // Reset the grid data to empty strings
+        setWinningCombination([]); // Reset the winning combination
         titleRef.current.innerHTML = "Tic-<span>Tac</span> -Toe"; // Reset the title
         titleRef.current.classList.remove("congratulations-message", "tie-message"); // Remove classes
-        titleRef.current.style.color = ""; // Reset the title color to default (use your original color if needed)       
+        titleRef.current.style.color = ""; // Reset the title color to default
         setCount(0); // Reset the count to 0
         setIsGameOver(false); // Reset game over state
         setTimeout(() => {
-            titleRef.current.classList.add("title-animation"); // Add animation class again
+            titleRef.current.classList.add("title-animation"); // Reapply title animation (optional)
         }, 50);
-                
     };
 
     const toggleDarkMode = () => {
@@ -118,19 +114,19 @@ const TicTacToe = () => {
 
             <div className="board">
                 <div className="row1">
-                    <div className="boxes" ref={(el) => (boxRefs.current[0] = el)} onClick={(e) => toggle(e, 0)}></div>
-                    <div className="boxes" ref={(el) => (boxRefs.current[1] = el)} onClick={(e) => toggle(e, 1)}></div>
-                    <div className="boxes" ref={(el) => (boxRefs.current[2] = el)} onClick={(e) => toggle(e, 2)}></div>
+                    <div className={`boxes ${data[0] ? 'selected' : ''}`} ref={(el) => (boxRefs.current[0] = el)} onClick={(e) => toggle(e, 0)}></div>
+                    <div className={`boxes ${data[1] ? 'selected' : ''}`} ref={(el) => (boxRefs.current[1] = el)} onClick={(e) => toggle(e, 1)}></div>
+                    <div className={`boxes ${data[2] ? 'selected' : ''}`} ref={(el) => (boxRefs.current[2] = el)} onClick={(e) => toggle(e, 2)}></div>
                 </div>
                 <div className="row2">
-                    <div className="boxes" ref={(el) => (boxRefs.current[3] = el)} onClick={(e) => toggle(e, 3)}></div>
-                    <div className="boxes" ref={(el) => (boxRefs.current[4] = el)} onClick={(e) => toggle(e, 4)}></div>
-                    <div className="boxes" ref={(el) => (boxRefs.current[5] = el)} onClick={(e) => toggle(e, 5)}></div>
+                    <div className={`boxes ${data[3] ? 'selected' : ''}`} ref={(el) => (boxRefs.current[3] = el)} onClick={(e) => toggle(e, 3)}></div>
+                    <div className={`boxes ${data[4] ? 'selected' : ''}`} ref={(el) => (boxRefs.current[4] = el)} onClick={(e) => toggle(e, 4)}></div>
+                    <div className={`boxes ${data[5] ? 'selected' : ''}`} ref={(el) => (boxRefs.current[5] = el)} onClick={(e) => toggle(e, 5)}></div>
                 </div>
                 <div className="row3">
-                    <div className="boxes" ref={(el) => (boxRefs.current[6] = el)} onClick={(e) => toggle(e, 6)}></div>
-                    <div className="boxes" ref={(el) => (boxRefs.current[7] = el)} onClick={(e) => toggle(e, 7)}></div>
-                    <div className="boxes" ref={(el) => (boxRefs.current[8] = el)} onClick={(e) => toggle(e, 8)}></div>
+                    <div className={`boxes ${data[6] ? 'selected' : ''}`} ref={(el) => (boxRefs.current[6] = el)} onClick={(e) => toggle(e, 6)}></div>
+                    <div className={`boxes ${data[7] ? 'selected' : ''}`} ref={(el) => (boxRefs.current[7] = el)} onClick={(e) => toggle(e, 7)}></div>
+                    <div className={`boxes ${data[8] ? 'selected' : ''}`} ref={(el) => (boxRefs.current[8] = el)} onClick={(e) => toggle(e, 8)}></div>
                 </div>
             </div>
 

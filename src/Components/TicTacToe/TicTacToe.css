@@ -82,8 +82,13 @@ body {
 .winning-box {
     background-color: #ffcc00; /* Yellow color for the winning boxes */
     border: 2px solid #333; /* Optional: Border to highlight the winning boxes */
+    animation-name: fadeIn;
   }
   
+  /* Optional: Highlight boxes that have been selected */
+  .selected {
+    opacity: 0.6;
+  }
 .board{
     height: 500px;
     width: 524px;
