@@ -11,3 +11,9 @@
   <li>User " " win Alert Prompt Removed</li>
   
 </ul>
+
+09.11.2024
+<ul>
+  <li>smoothen up the animation of toggle dark mode</li>
+</ul>
+
