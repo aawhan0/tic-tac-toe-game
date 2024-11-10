@@ -12,7 +12,7 @@
   
 </ul>
 
-09.11.2024
+10.11.2024
 <ul>
   <li>smoothen up the animation of toggle dark mode</li>
 </ul>
